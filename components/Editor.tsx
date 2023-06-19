@@ -5,8 +5,15 @@ import { useAutosave } from 'react-autosave'
 
 import { updateEntry } from '@/utils/api'
 
-const Editor = ({ entry }) => {
-    const [value, setValue] = useState(entry?.content || '')
+type EditorProps = {
+    entry: {
+        id: string
+        content: string
+    }
+}
+
+const Editor = ({ entry }: EditorProps) => {
+    const [value, setValue] = useState(entry.content)
     const [isLoading, setIsLoading] = useState(false)
 
     useAutosave({

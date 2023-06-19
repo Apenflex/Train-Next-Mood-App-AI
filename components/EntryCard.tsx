@@ -1,4 +1,14 @@
-const EntryCard = ({ entry }) => {
+interface Entry {
+    id: string
+    content: string
+    createdAt: string
+}
+
+interface EntryCardProps {
+    entry: Entry
+}
+
+const EntryCard = ({ entry }: EntryCardProps): JSX.Element => {
     const date = new Date(entry.createdAt).toDateString()
     return (
         <div className="divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow">

@@ -13,7 +13,7 @@ export const createNewEntry = async () => {
     }
 }
 
-export const updateEntry = async (id: string, content: string) => {
+export const updateEntry = async (id: String, content: string) => {
     const res = await fetch(new Request(createUrl(`/api/journal/${id}`), {
         method: 'PATCH',
         body: JSON.stringify({ content }),

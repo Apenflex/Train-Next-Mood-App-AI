@@ -29,7 +29,7 @@ const JournalPage = async () => {
                 <NewEntryCard />
                 {entries.map((entry) => (
                     <Link href={`/journal/${entry.id}`} key={entry.id}>
-                        <EntryCard entry={entry} />
+                        <EntryCard entry={{ ...entry, createdAt: entry.createdAt.toString() }} />
                     </Link>
                 ))}
             </div>
