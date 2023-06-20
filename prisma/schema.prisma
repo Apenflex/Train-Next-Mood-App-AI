@@ -13,12 +13,30 @@ datasource db {
 
 model User {
   id        String   @id @default(uuid())
+  email     String   @unique
+  clerkId   String   @unique
+  name      String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  account   Account?
 
-  clerkId String         @unique
-  email   String         @unique
-  entries JournalEntry[]
+  entries  JournalEntry[]
+  analysis Analysis[]
+}
+
+model Account {
+  id     String @id @default(uuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+  // stripeCustomerId String @unique
+
+  @@unique([userId])
+}
+
+enum JOURNAL_ENTRY_STATUS {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
 }
 
 model JournalEntry {
@@ -26,7 +44,8 @@ model JournalEntry {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  content String @db.Text
+  content String               @db.Text
+  status  JOURNAL_ENTRY_STATUS @default(DRAFT)
 
   userId String
   user   User   @relation(fields: [userId], references: [id])
@@ -41,13 +60,19 @@ model Analysis {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  mood     String
-  summary  String  @db.Text
-  color    String
-  negative Boolean
-
   entryId String
   entry   JournalEntry @relation(fields: [entryId], references: [id])
 
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  mood           String  @db.Text
+  subject        String  @db.Text
+  negative       Boolean
+  summary        String  @db.Text
+  color          String  @default("#0101fe") @db.Text
+  sentimentScore Float
+
   @@unique([entryId])
+  @@index([userId])
 }

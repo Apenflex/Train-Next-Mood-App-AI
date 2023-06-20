@@ -8,6 +8,11 @@ type Entry = {
     updatedAt: Date
     content: string
     userId: string
+    analysis: {
+        color: string
+        subject: string
+        mood: string
+    }
 }
 
 type EntryPageProps = {

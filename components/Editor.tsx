@@ -1,12 +1,16 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useAutosave } from 'react-autosave'
 
-import { updateEntry } from '@/utils/api'
+import { deleteEntry, updateEntry } from '@/utils/api'
+
+import Spinner from './Spinner'
 
 type EditorProps = {
     entry: {
+        analysis: any
         id: string
         content: string
     }
@@ -14,24 +18,63 @@ type EditorProps = {
 
 const Editor = ({ entry }: EditorProps) => {
     const [value, setValue] = useState(entry.content)
-    const [isLoading, setIsLoading] = useState(false)
+    const [currentEntry, setEntry] = useState(entry)
+    const [isSaving, setIsSaving] = useState(false)
+    const router = useRouter()
+
+    const handleDelete = async () => {
+        await deleteEntry(entry.id)
+        router.push('/journal')
+    }
 
     useAutosave({
         data: value,
         onSave: async (_value) => {
-            setIsLoading(true)
-            const updated = await updateEntry(entry.id, _value)
-            setIsLoading(false)
+            if(_value === entry.content) return
+            setIsSaving(true)
+            const { updated } = await updateEntry(entry.id, { content: _value })
+            setEntry(updated)
+            setIsSaving(false)
         },
     })
     return (
-        <div className="w-full h-full">
-            {isLoading && (
-                <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-50">
-                    <span className="text-3xl">Saving...</span>
+        <div className="w-full h-full grid grid-cols-3 gap-0 relative">
+            <div className="absolute left-0 top-0 p-2">{isSaving ? <Spinner /> : <div className="w-[16px] h-[16px] rounded-full bg-green-500"></div>}</div>
+            <div className="col-span-2">
+                <textarea value={value} onChange={(e) => setValue(e.target.value)} className="w-full h-full text-xl p-8" />
+            </div>
+            <div className="border-l border-black/5">
+                {/* <div style={{ background: currentEntry.analysis.color }} className="h-[100px] bg-blue-600 text-white p-8">
+                    <h2 className="text-2xl bg-white/25 text-black">Analysis</h2>
+                </div> */}
+                <div>
+                    <ul role="list" className="divide-y divide-gray-200">
+                        {/* <li className="py-4 px-8 flex items-center justify-between">
+                            <div className="text-xl font-semibold w-1/3">Subject</div>
+                            <div className="text-xl">{currentEntry.analysis.subject}</div>
+                        </li>
+
+                        <li className="py-4 px-8 flex items-center justify-between">
+                            <div className="text-xl font-semibold">Mood</div>
+                            <div className="text-xl">{currentEntry.analysis.mood}</div>
+                        </li>
+
+                        <li className="py-4 px-8 flex items-center justify-between">
+                            <div className="text-xl font-semibold">Negative</div>
+                            <div className="text-xl">{currentEntry.analysis.negative ? 'True' : 'False'}</div>
+                        </li> */}
+                        <li className="py-4 px-8 flex items-center justify-between">
+                            <button
+                                onClick={handleDelete}
+                                type="button"
+                                className="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+                            >
+                                Delete
+                            </button>
+                        </li>
+                    </ul>
                 </div>
-            )}
-            <textarea className="w-full h-full p-8 text-xl outline-none" value={value} onChange={(e) => setValue(e.target.value)} />
+            </div>
         </div>
     )
 }
