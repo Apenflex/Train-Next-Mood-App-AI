@@ -30,6 +30,9 @@ const getEntry = async (id: string): Promise<Entry | null> => {
                 id,
             },
         },
+        include: {
+            analysis: true,
+        }
     })
 
     return entry
