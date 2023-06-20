@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 
+import { updatePath } from "@/utils/actions"
 import { getUserByClerId } from "@/utils/auth"
 import { prisma } from "@/utils/db"
 
