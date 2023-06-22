@@ -6,6 +6,7 @@ import { createNewEntry } from "@/utils/api"
 
 const NewEntryCard = () => {
     const router = useRouter()
+
     const handleOnClick = async () => {
         const data = await createNewEntry()
         router.push(`/journal/${data.id}`)

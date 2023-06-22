@@ -25,7 +25,7 @@ const getEntries = async () => {
 
 const JournalPage = async () => {
     const entries = await getEntries()
-
+    
     return (
         <div className="px-6 py-8 bg-zinc-100/50 h-full">
             <h2 className="text-4xl mb-12">Journals</h2>

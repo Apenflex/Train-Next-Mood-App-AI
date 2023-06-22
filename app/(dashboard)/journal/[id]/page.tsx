@@ -2,26 +2,7 @@ import Editor from "@/components/Editor"
 import { getUserByClerId } from "@/utils/auth"
 import { prisma } from "@/utils/db"
 
-type Entry = {
-    id: string
-    createdAt: Date
-    updatedAt: Date
-    content: string
-    userId: string
-    analysis: {
-        color: string
-        subject: string
-        mood: string
-    }
-}
-
-type EntryPageProps = {
-    params: {
-        id: string
-    }
-}
-
-const getEntry = async (id: string): Promise<Entry | null> => {
+const getEntry = async (id) => {
     const user = await getUserByClerId()
     const entry = await prisma.journalEntry.findUnique({
         where: {
@@ -38,8 +19,9 @@ const getEntry = async (id: string): Promise<Entry | null> => {
     return entry
 }
 
-const EntryPage = async ({ params }: EntryPageProps) => {
+const EntryPage = async ({ params }) => {
     const entry = await getEntry(params.id)
+    
     if (!entry) return null
     
     return (

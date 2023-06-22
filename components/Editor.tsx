@@ -10,14 +10,19 @@ import Spinner from './Spinner'
 
 type EditorProps = {
     entry: {
-        analysis: any
         id: string
         content: string
+        analysis: {
+            color: string
+            mood: string
+            negative: boolean
+            subject: string
+        }
     }
 }
 
 const Editor = ({ entry }: EditorProps) => {
-    const [value, setValue] = useState(entry.content)
+    const [text, setText] = useState(entry.content)
     const [currentEntry, setEntry] = useState(entry)
     const [isSaving, setIsSaving] = useState(false)
     const router = useRouter()
@@ -28,12 +33,12 @@ const Editor = ({ entry }: EditorProps) => {
     }
 
     useAutosave({
-        data: value,
-        onSave: async (_value) => {
-            if(_value === entry.content) return
+        data: text,
+        onSave: async (_text) => {
+            if (_text === entry.content) return
             setIsSaving(true)
-            const { updated } = await updateEntry(entry.id, { content: _value })
-            setEntry(updated)
+            const { data } = await updateEntry(entry.id, { content: _text })
+            setEntry(data)
             setIsSaving(false)
         },
     })
@@ -41,28 +46,28 @@ const Editor = ({ entry }: EditorProps) => {
         <div className="w-full h-full grid grid-cols-3 gap-0 relative">
             <div className="absolute left-0 top-0 p-2">{isSaving ? <Spinner /> : <div className="w-[16px] h-[16px] rounded-full bg-green-500"></div>}</div>
             <div className="col-span-2">
-                <textarea value={value} onChange={(e) => setValue(e.target.value)} className="w-full h-full text-xl p-8" />
+                <textarea value={text} onChange={(e) => setText(e.target.value)} className="w-full h-full text-xl p-8" />
             </div>
             <div className="border-l border-black/5">
-                {/* <div style={{ background: currentEntry.analysis.color }} className="h-[100px] bg-blue-600 text-white p-8">
+                <div style={{ background: currentEntry?.analysis?.color }} className="h-[100px] bg-blue-600 text-white p-8">
                     <h2 className="text-2xl bg-white/25 text-black">Analysis</h2>
-                </div> */}
+                </div>
                 <div>
                     <ul role="list" className="divide-y divide-gray-200">
-                        {/* <li className="py-4 px-8 flex items-center justify-between">
+                        <li className="py-4 px-8 flex items-center justify-between">
                             <div className="text-xl font-semibold w-1/3">Subject</div>
-                            <div className="text-xl">{currentEntry.analysis.subject}</div>
+                            <div className="text-xl">{currentEntry?.analysis?.subject}</div>
                         </li>
 
                         <li className="py-4 px-8 flex items-center justify-between">
                             <div className="text-xl font-semibold">Mood</div>
-                            <div className="text-xl">{currentEntry.analysis.mood}</div>
+                            <div className="text-xl">{currentEntry?.analysis?.mood}</div>
                         </li>
 
                         <li className="py-4 px-8 flex items-center justify-between">
                             <div className="text-xl font-semibold">Negative</div>
-                            <div className="text-xl">{currentEntry.analysis.negative ? 'True' : 'False'}</div>
-                        </li> */}
+                            <div className="text-xl">{currentEntry?.analysis?.negative ? 'True' : 'False'}</div>
+                        </li>
                         <li className="py-4 px-8 flex items-center justify-between">
                             <button
                                 onClick={handleDelete}
