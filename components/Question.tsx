@@ -24,16 +24,16 @@ const Question = () => {
     return (
         <div>
             <form onSubmit={handleSubmit}>
-                <div className='flex items-center'>
+                <div className="flex flex-col items-center gap-2 sm:flex-row sm:gap-1">
                     <input
                         type="text"
                         value={question}
                         onChange={(e) => setQuestion(e.target.value)}
-                        className="border border-gray-300 rounded-md p-2 text-lg w-[500px] max-w-[500px]"
+                        className="border border-gray-300 rounded-md p-2 text-lg w-full max-w-[500px]"
                         disabled={loading}
                         placeholder="Ask a question..."
                     />
-                    <button disabled={loading} type="submit" className="w-[60px] h-[40px] bg-blue-400 px-4 py-2 rounded-md ml-1">
+                    <button disabled={loading} type="submit" className="w-[160px] h-[40px] bg-blue-400 px-4 py-2 rounded-md sm:w-[60px]">
                         {loading ? <Spinner /> : 'Ask'}
                     </button>
                 </div>

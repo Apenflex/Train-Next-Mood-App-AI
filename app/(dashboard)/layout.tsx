@@ -9,7 +9,7 @@ const links = [
 const DashboardLayout = ({ children }) => {
     return (
         <div className="w-screen h-screen relative">
-            <aside className="absolute left-0 top-0 h-full w-[200px] border-r border-black/10">
+            <aside className="absolute left-0 top-0 h-full w-[150px] border-r border-black/10 lg:w-[200px]">
                 <div className="px-4 my-4">
                     <span className="text-3xl">MOOD</span>
                 </div>
@@ -23,7 +23,7 @@ const DashboardLayout = ({ children }) => {
                     </ul>
                 </div>
             </aside>
-            <div className="ml-[200px] h-full w-[calc(100vw-200px)]">
+            <div className="ml-[150px] h-full w-[calc(100vw-150px)] lg:ml-[200px] lg:w-[calc(100vw-200px)]">
                 <header className="h-[60px] border-b border-black/10">
                     <nav className="px-4 h-full">
                         <div className="flex items-center justify-end h-full">

@@ -19,7 +19,6 @@ export const createNewEntry = async () => {
 }
 
 export const updateEntry = async (id: String, content: Object) => {
-    // console.log('updateEntry', (content))
     const res = await fetch(
         new Request(createUrl(`/api/entry/${id}`), {
             method: 'PATCH',
@@ -47,7 +46,6 @@ export const deleteEntry = async (id: String) => {
     
     if (res.ok) {
         const data = await res.json()
-        console.log('deleteEntry', data)
         return data.data
     } else {
         throw new Error('Something went wrong on API server!')

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 
-import { updatePath } from "@/utils/actions"
+// import { updatePath } from "@/utils/actions"
 import { getUserByClerId } from "@/utils/auth"
 import { prisma } from "@/utils/db"
 
@@ -29,7 +29,7 @@ export const POST = async (request: Request) => {
         },
     })
 
-    updatePath(['/journal'])
+    // updatePath(['/journal'])
 
     return NextResponse.json({ data: entry })
 }

@@ -30,6 +30,7 @@ const Editor = ({ entry }: EditorProps) => {
     const handleDelete = async () => {
         await deleteEntry(entry.id)
         router.push('/journal')
+        router.refresh()
     }
 
     useAutosave({
