@@ -27,7 +27,7 @@ const JournalPage = async () => {
     const entries = await getEntries()
     
     return (
-        <div className="px-4 py-6 bg-zinc-100/50 sm:px-6 sm:py-8">
+        <div className="px-4 py-6 bg-neutral-300/70 sm:px-6 sm:py-8">
             <h2 className="text-4xl mb-12">Journals</h2>
             <div className="my-8">
                 <Question />
@@ -36,7 +36,7 @@ const JournalPage = async () => {
                 <NewEntryCard />
                 {entries.map((entry) => (
                     <div key={entry.id}>
-                        <Link href={`/journal/${entry.id}`} >
+                        <Link href={`/journal/${entry.id}`}>
                             <EntryCard entry={entry} />
                         </Link>
                     </div>

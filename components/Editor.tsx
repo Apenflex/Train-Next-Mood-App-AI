@@ -44,13 +44,15 @@ const Editor = ({ entry }: EditorProps) => {
         },
     })
     return (
-        <div className="w-full h-full grid grid-cols-3 gap-0 relative">
-            <div className="absolute left-0 top-0 p-2">{isSaving ? <Spinner /> : <div className="w-[16px] h-[16px] rounded-full bg-green-500"></div>}</div>
-            <div className="col-span-2">
-                <textarea value={text} onChange={(e) => setText(e.target.value)} className="w-full h-full text-xl p-8" />
+        <div className="w-full h-full grid grid-rows-2 gap-0  lg:grid-cols-[2fr_minmax(0,_1fr)_0fr]">
+            <div className="h-full relative row-start-2 lg:row-start-1">
+                <div className="absolute left-0 top-0 p-2">{isSaving ? <Spinner /> : <div className="w-[16px] h-[16px] rounded-full bg-green-500"></div>}</div>
+                <div className="h-full">
+                    <textarea value={text} onChange={(e) => setText(e.target.value)} className="w-full h-full text-xl p-8" />
+                </div>
             </div>
             <div className="border-l border-black/5">
-                <div style={{ background: currentEntry?.analysis?.color }} className="h-[100px] bg-blue-600 text-white p-8">
+                <div style={{ background: currentEntry?.analysis?.color }} className="h-[50px] bg-blue-600 text-white p-2 lg:h-[100px] lg:p-8">
                     <h2 className="text-2xl bg-white/25 text-black">Analysis</h2>
                 </div>
                 <div>

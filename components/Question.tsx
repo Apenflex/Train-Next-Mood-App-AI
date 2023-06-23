@@ -29,11 +29,11 @@ const Question = () => {
                         type="text"
                         value={question}
                         onChange={(e) => setQuestion(e.target.value)}
-                        className="border border-gray-300 rounded-md p-2 text-lg w-full max-w-[500px]"
+                        className="border border-gray-300 bg-neutral-100 rounded-md p-2 text-lg w-full max-w-[500px] drop-shadow-[0_6px_3px_rgba(0,0,0,0.25)]"
                         disabled={loading}
                         placeholder="Ask a question..."
                     />
-                    <button disabled={loading} type="submit" className="w-[160px] h-[40px] bg-blue-400 px-4 py-2 rounded-md sm:w-[60px]">
+                    <button disabled={loading} type="submit" className="w-[160px] h-[40px] bg-blue-400 px-4 py-2 rounded-md sm:w-[60px] drop-shadow-[0_6px_3px_rgba(0,0,0,0.45)] ">
                         {loading ? <Spinner /> : 'Ask'}
                     </button>
                 </div>

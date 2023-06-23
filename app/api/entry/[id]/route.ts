@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 
-// import { updatePath } from '@/utils/actions'
+import { updatePath } from '@/utils/actions'
 import { analyzeEntry } from '@/utils/ai'
 import { getUserByClerId } from '@/utils/auth'
 import { prisma } from '@/utils/db'
@@ -55,7 +55,7 @@ export const PATCH = async (request: Request, { params }) => {
         },
     })
 
-    // updatePath(['/journal'])
+    updatePath(['/journal'])
 
     return NextResponse.json({ data: { ...entry, analysis: savedAnalysis } })
 }

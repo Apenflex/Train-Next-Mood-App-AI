@@ -6,7 +6,7 @@ const links = [
     { name: 'History', href: '/history' },
 ]
 
-const DashboardLayout = ({ children }) => {
+const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
     return (
         <div className="w-screen h-screen relative">
             <aside className="absolute left-0 top-0 h-full w-[150px] border-r border-black/10 lg:w-[200px]">

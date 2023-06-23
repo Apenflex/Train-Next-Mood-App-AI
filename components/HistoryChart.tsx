@@ -1,7 +1,39 @@
 'use client'
 import { Line, LineChart, ResponsiveContainer, Tooltip,XAxis } from 'recharts'
 
-const CustomTooltip = ({ payload, label, active }) => {
+type Entry = {
+    color: string
+    createdAt: Date
+    entryId: string
+    id: string
+    mood: string
+    negative: boolean
+    sentimentScore: number
+    subject: string
+    summary: string
+    updatedAt: Date
+    userId: string
+}
+
+type HistoryChartProps = {
+    data: Entry[]
+}
+
+type Payload = {
+    id: string
+    createdAt: Date
+    updatedAt: Date
+    entryId: string
+    userId: string
+}
+
+type CustomTooltipProps = {
+    payload: Payload | null
+    label: string
+    active: boolean
+}
+
+const CustomTooltip = ({ payload, label, active }: CustomTooltipProps) => {
     const dateLabel = new Date(label).toLocaleString('en-us', {
         weekday: 'long',
         year: 'numeric',
@@ -25,13 +57,13 @@ const CustomTooltip = ({ payload, label, active }) => {
     return null
 }
 
-const HistoryChart = ({ data }) => {
+const HistoryChart = ({ data }: HistoryChartProps) => {
     return (
         <ResponsiveContainer width="100%" height="100%">
             <LineChart width={300} height={100} data={data}>
                 <Line type="monotone" dataKey="sentimentScore" stroke="#8884d8" strokeWidth={2} activeDot={{ r: 8 }} />
                 <XAxis dataKey="updatedAt" />
-                <Tooltip content={<CustomTooltip />} />
+                <Tooltip content={<CustomTooltip payload={null} label={''} active={false} />} />
             </LineChart>
         </ResponsiveContainer>
     )
