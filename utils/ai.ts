@@ -2,10 +2,25 @@ import { loadQARefineChain } from 'langchain/chains'
 import { Document } from 'langchain/document'
 import { OpenAIEmbeddings } from 'langchain/embeddings/openai'
 import { OpenAI } from 'langchain/llms/openai'
-import { OutputFixingParser,StructuredOutputParser } from 'langchain/output_parsers'
+import { OutputFixingParser, StructuredOutputParser } from 'langchain/output_parsers'
 import { PromptTemplate } from 'langchain/prompts'
 import { MemoryVectorStore } from 'langchain/vectorstores/memory'
 import { z } from 'zod'
+
+type AnalyzedEntry = {
+    mood: string
+    subject: string
+    negative: boolean
+    summary: string
+    color: string
+    sentimentScore: number
+    content: string
+}
+type Entry = {
+    id: string
+    content: string
+    createdAt: string
+}
 
 const parser = StructuredOutputParser.fromZodSchema(
     z.object({
@@ -14,15 +29,20 @@ const parser = StructuredOutputParser.fromZodSchema(
         negative: z.boolean().describe('is the journal entry negative? (i.e. does it contain negative emotions?).'),
         summary: z.string().describe('quick summary of the entire entry.'),
         color: z.string().describe('a hexidecimal color code the represents the mood of the entry. Example #0101fe for blue representing happiness.'),
-        sentimentScore: z.number().describe('sentiment of the text and rated on a scale from -10 to 10, where -10 is extremely negative, 0 is neutral, and 10 is extremely positive.'),
+        sentimentScore: z
+            .number()
+            .describe(
+                'sentiment of the text and rated on a scale from -10 to 10, where -10 is extremely negative, 0 is neutral, and 10 is extremely positive.'
+            ),
     })
 )
 
-const getPrompt = async (content) => {
+const getPrompt = async (content: string) => {
     const format_instructions = parser.getFormatInstructions()
 
     const prompt = new PromptTemplate({
-        template: 'Analyze the following journal entry. Follow the intrusctions and format your response to match the format instructions, no matter what! \n{format_instructions}\n{entry}',
+        template:
+            'Analyze the following journal entry. Follow the intrusctions and format your response to match the format instructions, no matter what! \n{format_instructions}\n{entry}',
         inputVariables: ['entry'],
         partialVariables: { format_instructions },
     })
@@ -34,7 +54,7 @@ const getPrompt = async (content) => {
     return input
 }
 
-export const analyzeEntry = async (entry) => {
+export const analyzeEntry = async (entry: AnalyzedEntry) => {
     const input = await getPrompt(entry.content)
     const model = new OpenAI({ temperature: 0, modelName: 'gpt-3.5-turbo' })
     const output = await model.call(input)
@@ -48,7 +68,7 @@ export const analyzeEntry = async (entry) => {
     }
 }
 
-export const qa = async (question, entries) => {
+export const qa = async (question: string, entries: Entry[]) => {
     const docs = entries.map(
         (entry) =>
             new Document({

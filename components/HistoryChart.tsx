@@ -1,34 +1,22 @@
 'use client'
-import { Line, LineChart, ResponsiveContainer, Tooltip,XAxis } from 'recharts'
+import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts'
 
 type Entry = {
-    color: string
-    createdAt: Date
-    entryId: string
-    id: string
-    mood: string
-    negative: boolean
+    payload: {
+        mood: string
+        color: string
+        sentimentScore: number
+    }
+    updatedAt: string
     sentimentScore: number
-    subject: string
-    summary: string
-    updatedAt: Date
-    userId: string
 }
 
 type HistoryChartProps = {
     data: Entry[]
 }
 
-type Payload = {
-    id: string
-    createdAt: Date
-    updatedAt: Date
-    entryId: string
-    userId: string
-}
-
 type CustomTooltipProps = {
-    payload: Payload | null
+    payload: Entry[] | null
     label: string
     active: boolean
 }
@@ -43,17 +31,20 @@ const CustomTooltip = ({ payload, label, active }: CustomTooltipProps) => {
         minute: 'numeric',
     })
 
-    if (active) {
+    if (active && payload !== null) {
         const analysis = payload[0].payload
+        console.log(analysis)
         return (
-            <div className="p-8 custom-tooltip bg-white/5 shadow-md border border-black/10 rounded-lg backdrop-blur-md relative">
-                <div className="absolute left-2 top-2 w-2 h-2 rounded-full" style={{ background: analysis.color }}></div>
-                <p className="label text-sm text-black/30">{dateLabel}</p>
-                <p className="intro text-xl uppercase">{analysis.mood}</p>
+            <div className="p-5 custom-tooltip shadow-lg border border-black/10 rounded-lg backdrop-blur-md" style={{ background: analysis.color }}>
+                {/* <div className="absolute left-2 top-2 w-5 h-5 rounded-full"></div> */}
+                <p className="label text-xs text-black/50">{dateLabel}</p>
+                <div className="flex flex-col">
+                    <span className="intro text-lg uppercase mb-1">{analysis.mood}</span>
+                    <span className="intro text-sm uppercase">Sentiment Score {analysis.sentimentScore}</span>
+                </div>
             </div>
         )
     }
-
     return null
 }
 
@@ -63,7 +54,7 @@ const HistoryChart = ({ data }: HistoryChartProps) => {
             <LineChart width={300} height={100} data={data}>
                 <Line type="monotone" dataKey="sentimentScore" stroke="#8884d8" strokeWidth={2} activeDot={{ r: 8 }} />
                 <XAxis dataKey="updatedAt" />
-                <Tooltip content={<CustomTooltip payload={null} label={''} active={false} />} />
+                <Tooltip content={<CustomTooltip payload={data} label="" active={false} />} />
             </LineChart>
         </ResponsiveContainer>
     )

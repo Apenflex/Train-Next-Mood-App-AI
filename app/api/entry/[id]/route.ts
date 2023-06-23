@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server'
 
-import { updatePath } from '@/utils/actions'
+// import { updatePath } from '@/utils/actions'
 import { analyzeEntry } from '@/utils/ai'
 import { getUserByClerId } from '@/utils/auth'
 import { prisma } from '@/utils/db'
 
-export const DELETE = async (request: Request, { params }) => {
+export const DELETE = async (request: Request, { params }: { params: { id: string } }): Promise<NextResponse>  => {
     const user = await getUserByClerId()
     
     await prisma.analysis.deleteMany({
@@ -27,9 +27,8 @@ export const DELETE = async (request: Request, { params }) => {
     return NextResponse.json({ data: { id: params.id } })
 }
 
-export const PATCH = async (request: Request, { params }) => {
+export const PATCH = async (request: Request, { params }: { params: { id: string } }): Promise<NextResponse> => {
     const { content } = await request.json()
-    // console.log('PATCH Method', content)
     const user = await getUserByClerId()
 
     const entry = await prisma.journalEntry.update({
@@ -55,7 +54,7 @@ export const PATCH = async (request: Request, { params }) => {
         },
     })
 
-    updatePath(['/journal'])
+    // updatePath(['/journal'])
 
     return NextResponse.json({ data: { ...entry, analysis: savedAnalysis } })
 }

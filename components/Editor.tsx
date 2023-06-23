@@ -1,38 +1,29 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { FC,useState } from 'react'
 import { useAutosave } from 'react-autosave'
 
+import { EditorProps } from '@/types/editorType'
 import { deleteEntry, updateEntry } from '@/utils/api'
 
 import Spinner from './Spinner'
 
-type EditorProps = {
-    entry: {
-        id: string
-        content: string
-        analysis: {
-            color: string
-            mood: string
-            negative: boolean
-            subject: string
-        }
-    }
-}
-
-const Editor = ({ entry }: EditorProps) => {
+const Editor: FC<EditorProps> = ({ entry }) => {
     const [text, setText] = useState(entry.content)
     const [currentEntry, setEntry] = useState(entry)
     const [isSaving, setIsSaving] = useState(false)
     const router = useRouter()
-
+    /**
+     * @description Deletes the current entry and redirects to the journal page
+     * @returns {void}
+     */
     const handleDelete = async () => {
         await deleteEntry(entry.id)
         router.push('/journal')
         router.refresh()
     }
-
+    // Autosaves the current entry when the user stops typing for 2 seconds
     useAutosave({
         data: text,
         onSave: async (_text) => {

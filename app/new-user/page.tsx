@@ -5,18 +5,17 @@ import { prisma } from '@/utils/db'
 
 const createNewUser = async () => {
     const user = await currentUser()
-    // console.log(user)
     const match = await prisma.user.findUnique({
         where: {
-            clerkId: user?.id,
+            clerkId: user?.id || '',
         },
     })
 
     if (!match) {
         await prisma.user.create({
             data: {
-                clerkId: user?.id!,
-                email: user?.emailAddresses[0].emailAddress,
+                clerkId: user?.id || '',
+                email: user?.emailAddresses[0]?.emailAddress || '',
             },
         })
     }

@@ -4,7 +4,7 @@ import { qa } from '@/utils/ai'
 import { getUserByClerId } from '@/utils/auth'
 import { prisma } from '@/utils/db'
 
-export const POST = async (request) => {
+export const POST = async (request: Request) => {
     const { question } = await request.json()
     const user = await getUserByClerId()
     

@@ -9,7 +9,7 @@ export const createNewEntry = async () => {
             body: JSON.stringify({ content: 'Write about your day!' }),
         })
     )
-    
+
     if (res.ok) {
         const data = await res.json()
         return data.data
@@ -18,17 +18,17 @@ export const createNewEntry = async () => {
     }
 }
 
-export const updateEntry = async (id: String, content: Object) => {
+export const updateEntry = async (id: string, content: object) => {
     const res = await fetch(
         new Request(createUrl(`/api/entry/${id}`), {
             method: 'PATCH',
-            body: JSON.stringify({content}),
+            body: JSON.stringify({ content }),
             headers: {
                 'Content-Type': 'application/json', //цей заголовок для вказівки типу вмісту
             },
         })
     )
-    
+
     if (res.ok) {
         const data = await res.json()
         return data
@@ -37,13 +37,13 @@ export const updateEntry = async (id: String, content: Object) => {
     }
 }
 
-export const deleteEntry = async (id: String) => {
+export const deleteEntry = async (id: string) => {
     const res = await fetch(
         new Request(createUrl(`/api/entry/${id}`), {
             method: 'DELETE',
         })
     )
-    
+
     if (res.ok) {
         const data = await res.json()
         return data.data
@@ -52,7 +52,7 @@ export const deleteEntry = async (id: String) => {
     }
 }
 
-export const askQuestion = async (question: String) => {
+export const askQuestion = async (question: string) => {
     const res = await fetch(
         new Request(createUrl(`/api/question`), {
             method: 'POST',

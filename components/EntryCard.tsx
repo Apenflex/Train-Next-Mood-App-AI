@@ -1,26 +1,4 @@
-type Entry = {
-    entry: {
-        id: string
-        createdAt: Date
-        updatedAt: Date
-        content: string
-        status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED'
-        userId: string
-        analysis: {
-            id: string
-            createdAt: Date
-            updatedAt: Date
-            entryId: string
-            userId: string
-            mood: string
-            subject: string
-            negative: boolean
-            summary: string
-            color: string
-            sentimentScore: number
-        }
-    }
-}
+import { Entry } from '@/types/entryCardType'
 
 const createDropShadowStyle = (color: String, alpha: Number) => {
     const hexToRgba = (hex: String, alpha: Number) => {
@@ -38,18 +16,18 @@ const createDropShadowStyle = (color: String, alpha: Number) => {
 
 const EntryCard = ({ entry }: Entry) => {
     const date = new Date(entry.createdAt).toDateString()
-    const dropShadowStyle = createDropShadowStyle(entry.analysis.color, 0.2)
+    const dropShadowStyle = createDropShadowStyle(entry.analysis?.color || '', 0.2)
 
     return (
         <div className="divide-y divide-gray-400/50 overflow-hidden rounded-lg bg-neutral-200" style={dropShadowStyle}>
             <div className="px-4 py-5">{date}</div>
             <div className="flex flex-col gap-2 px-4 py-2">
                 <span className="border-b-2">Summary</span>
-                <span>{entry.analysis.summary}</span>
+                <span>{entry.analysis?.summary}</span>
             </div>
             <div className="px-4 py-4">
                 <span>Mood: </span>
-                <span>{entry.analysis.mood}</span>
+                <span>{entry.analysis?.mood}</span>
             </div>
         </div>
     )
