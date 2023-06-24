@@ -19,7 +19,7 @@ const getEntries = async () => {
             analysis: true,
         },
     })
-
+    console.log(entries)
     return entries
 }
 

@@ -1,4 +1,9 @@
-const createUrl = (path: string) => {
+/**
+ * @description Function to create url for api requests
+ * @param {string} path - path to api endpoint
+ * @returns {string} url for api requests
+ */
+export const createUrl = (path: string): string => {
     return window.location.origin + path
 }
 

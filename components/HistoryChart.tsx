@@ -1,27 +1,9 @@
 'use client'
 import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts'
 
-type Entry = {
-    payload: {
-        mood: string
-        color: string
-        sentimentScore: number
-    }
-    updatedAt: string
-    sentimentScore: number
-}
+import { CustomTooltipType, HistoryChartType } from '@/types/historyType'
 
-type HistoryChartProps = {
-    data: Entry[]
-}
-
-type CustomTooltipProps = {
-    payload: Entry[] | null
-    label: string
-    active: boolean
-}
-
-const CustomTooltip = ({ payload, label, active }: CustomTooltipProps) => {
+const CustomTooltip = ({ payload, label, active }: CustomTooltipType) => {
     const dateLabel = new Date(label).toLocaleString('en-us', {
         weekday: 'long',
         year: 'numeric',
@@ -33,7 +15,7 @@ const CustomTooltip = ({ payload, label, active }: CustomTooltipProps) => {
 
     if (active && payload !== null) {
         const analysis = payload[0].payload
-        console.log(analysis)
+
         return (
             <div className="p-5 custom-tooltip shadow-lg border border-black/10 rounded-lg backdrop-blur-md" style={{ background: analysis.color }}>
                 {/* <div className="absolute left-2 top-2 w-5 h-5 rounded-full"></div> */}
@@ -48,7 +30,7 @@ const CustomTooltip = ({ payload, label, active }: CustomTooltipProps) => {
     return null
 }
 
-const HistoryChart = ({ data }: HistoryChartProps) => {
+const HistoryChart = ({ data }: HistoryChartType) => {
     return (
         <ResponsiveContainer width="100%" height="100%">
             <LineChart width={300} height={100} data={data}>
@@ -59,5 +41,4 @@ const HistoryChart = ({ data }: HistoryChartProps) => {
         </ResponsiveContainer>
     )
 }
-
 export default HistoryChart

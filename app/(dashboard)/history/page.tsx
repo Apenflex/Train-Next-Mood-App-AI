@@ -1,4 +1,5 @@
 import HistoryChart from '@/components/HistoryChart'
+import { Entry } from '@/types/historyType'
 import { getUserByClerId } from '@/utils/auth'
 import { prisma } from '@/utils/db'
 
@@ -23,13 +24,24 @@ const getData = async () => {
 
 const HistoryPage = async () => {
     const { analyses, average } = await getData()
+
+    const entryAnalyses: Entry[] = analyses.map((analysis) => ({
+        payload: {
+            mood: analysis.mood,
+            color: analysis.color,
+            sentimentScore: analysis.sentimentScore,
+        },
+        updatedAt: analysis.updatedAt,
+        sentimentScore: analysis.sentimentScore,
+    }))
+
     return (
         <div className="h-full px-6 py-8">
             <div>
                 <h1 className="text-2xl mb-4">{`Avg. Sentiment: ${average}`}</h1>
             </div>
             <div className="h-full w-full">
-                <HistoryChart data={analyses} />
+                <HistoryChart data={entryAnalyses} />
             </div>
         </div>
     )
