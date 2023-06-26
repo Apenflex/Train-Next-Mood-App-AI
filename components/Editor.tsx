@@ -37,16 +37,18 @@ const Editor: FC<EditorProps> = ({ entry }) => {
     return (
         <div className="w-full h-full grid grid-rows-2 gap-0  lg:grid-cols-[2fr_minmax(0,_1fr)_0fr]">
             <div className="h-full relative row-start-2 lg:row-start-1">
-                <div className="absolute left-0 top-0 p-2">{isSaving ? <Spinner /> : <div className="w-[16px] h-[16px] rounded-full bg-green-500"></div>}</div>
+                <div className="absolute left-0 top-0 p-2">
+                    {isSaving ? <Spinner /> : <div className="w-[16px] h-[16px] rounded-full bg-green-500"></div>}
+                </div>
                 <div className="h-full">
-                    <textarea value={text} onChange={(e) => setText(e.target.value)} className="w-full h-full text-xl p-8" />
+                    <textarea value={text} onChange={(e) => setText(e.target.value)} className="w-full h-full bg-neutral-300 text-xl p-8" />
                 </div>
             </div>
-            <div className="border-l border-black/5">
+            <div className="border-l border-black/10">
                 <div style={{ background: currentEntry?.analysis?.color }} className="h-[50px] bg-blue-600 text-white p-2 lg:h-[100px] lg:p-8">
                     <h2 className="text-2xl bg-white/25 text-black">Analysis</h2>
                 </div>
-                <div>
+                <div className='shadow-lg'>
                     <ul role="list" className="divide-y divide-gray-200">
                         <li className="py-4 px-8 flex items-center justify-between">
                             <div className="text-xl font-semibold w-1/3">Subject</div>
