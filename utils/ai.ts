@@ -7,19 +7,12 @@ import { PromptTemplate } from 'langchain/prompts'
 import { MemoryVectorStore } from 'langchain/vectorstores/memory'
 import { z } from 'zod'
 
-type AnalyzedEntry = {
-    mood: string
-    subject: string
-    negative: boolean
-    summary: string
-    color: string
-    sentimentScore: number
-    content: string
-}
+import { AnalyzedEntry } from '@/types/analyzedEntry'
+
 type Entry = {
-    id: string
+    id?: string
     content: string
-    createdAt: string
+    createdAt: Date
 }
 
 const parser = StructuredOutputParser.fromZodSchema(
